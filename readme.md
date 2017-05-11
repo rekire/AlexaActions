@@ -22,6 +22,8 @@ The more advanced usage if something does not work for you:
         alexa.execute();
     };
 
+The Intents on API.ai have to be the same as in your Alexa Skill, the parameters of your intent API.ai have to be named equal to the slots in your skill.
+
 Examples
 --------
 
