@@ -27,7 +27,7 @@ function convertToAlexaStyle(json) {
         }
         json['session'] = {
             'application': {
-                'applicationId': 'amzn1.ask.skill.925f6ee1-0388-41f8-9874-84f4f4fe070c'
+                'applicationId': 'some-random-id'
             },
             'user': {
                 'userId': 'foo'
