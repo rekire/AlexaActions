@@ -1,6 +1,6 @@
 {
   "name": "alexa-actions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a lightweight wrapper to make the API.ai callbacks compatible with an Alexa Skill.",
   "main": "index.js",
   "contributors": [
