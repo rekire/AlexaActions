@@ -42,7 +42,7 @@ function convertToAlexaStyle(json) {
 function addApiAiAttributes(context) {
     const orgSucceed = context.succeed;
     context.succeed = function(json) {
-        json.speech = json.response.outputSpeech.ssml.replace(/(<\/?phoneme([^>]+)>)/ig, "");
+        json.speech = json.response.outputSpeech.ssml.replace(/(<\/?phoneme([^>]*)>)/ig, "");
         json.displayText = json.speech.replace(/(<([^>]+)>)/ig, "").trim();
         json.messages = [];
         if(json.response.card) {
