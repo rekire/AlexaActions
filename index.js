@@ -44,26 +44,14 @@ function addApiAiAttributes(context) {
     context.succeed = function(json) {
         json.speech = json.response.outputSpeech.ssml.replace(/(<\/?phoneme([^>]*)>)/ig, "");
         json.displayText = json.speech.replace(/(<([^>]+)>)/ig, "").trim();
-        json.messages = [];
-        if(json.response.card) {
-            const card = json.response.card;
-            json.messages.push({
-                "type": "simple_response",
-                "platform": "google",
-                "textToSpeech": json.speech.replace(/(<([^>]+)>)/ig, "").trim()
-            });
-            switch(card.type) {
-            case 'Standard':
-                json.messages.push({
-                    "type": "basic_card",
-                    "platform": "google",
-                    "title": card.title.replace(/(<([^>]+)>)/ig, ""),
-                    "formattedText": card.text.replace(/(<([^>]+)>)/ig, ""),
-                    "image": {"url": card.image.largeImageUrl},
-                    "buttons": []
-                })
+        if(!json.messages) {
+            json.messages = [];
+            if(json.response.card) {
+                json.messages.push(createDefaultCard(json.speech));
+                json.messages.push(autoConvertCards(json.response.card));
             }
         }
+        console.log("Send out:", json);
         return orgSucceed(json);
     };
     return context;
@@ -73,6 +61,32 @@ function wrapper(event, context, callback) {
     return require('alexa-sdk').handler(convertToAlexaStyle(event), addApiAiAttributes(context), callback);
 }
 
+function createDefaultCard(ssml) {
+    return {
+        "type": "simple_response",
+        "platform": "google",
+        "textToSpeech": ssml.replace(/(<([^>]+)>)/ig, "").trim()
+    };
+}
+
+function autoConvertCards(card) {
+    switch(card.type) {
+    case 'Standard':
+        return {
+            "type": "basic_card",
+            "platform": "google",
+            "title": card.title.replace(/(<([^>]+)>)/ig, ""),
+            "formattedText": card.text.replace(/(<([^>]+)>)/ig, ""),
+            "image": {"url": card.image.largeImageUrl},
+            "buttons": []
+        };
+    default:
+        throw 'Card type "' + card.type + '" is not yet supported.';
+    }
+}
+
 module.exports.toAlexaStyle = convertToAlexaStyle;
 module.exports.addApiAiAttributes = addApiAiAttributes;
 module.exports.handler = wrapper;
+module.exports.createDefaultCard = createDefaultCard;
+module.exports.autoConvertCards = autoConvertCards;
