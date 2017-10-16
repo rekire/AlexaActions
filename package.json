@@ -1,7 +1,7 @@
 {
   "name": "alexa-actions",
-  "version": "1.1.0",
-  "description": "This is a lightweight wrapper to make the API.ai callbacks compatible with an Alexa Skill.",
+  "version": "1.2.0",
+  "description": "This is a lightweight wrapper to make the Dialogflow callbacks compatible with an Alexa Skill.",
   "main": "index.js",
   "contributors": [
     {
@@ -24,7 +24,7 @@
     "Alexa",
     "Actions on Google",
     "Google Home",
-    "API.ai"
+    "Dialogflow"
   ],
   "author": "René Kilczan <npm@reki.re>",
   "license": "Apache-2.0",
