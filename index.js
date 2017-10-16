@@ -58,9 +58,12 @@ function addApiAiAttributes(context) {
                 }
             }
         }
-        json.contextOut = [];
+        if(!json.data) {
+            json.data = {}
+        }
+        json.data.contextOut = [];
         for(let key in json.sessionAttributes) {
-            json.contextOut.push({name: key, lifespan: 60, parameters: json.sessionAttributes[key]});
+            json.data.contextOut.push({name: key, lifespan: 0, parameters: json.sessionAttributes[key]});
         }
 
         console.log("Send out:", json);

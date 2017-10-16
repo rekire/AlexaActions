@@ -24,6 +24,7 @@
     "Alexa",
     "Actions on Google",
     "Google Home",
+    "Google Assistant",
     "Dialogflow"
   ],
   "author": "René Kilczan <npm@reki.re>",
