@@ -31,13 +31,17 @@ function convertToAlexaStyle(json) {
             },
             user: {
                 userId: 'foo'
-            }
+            },
+            attributes: {}
         };
-        json.sessionId = 'api.ai.' + json.sessionId;
+        json.sessionId = 'dialogflow.' + json.sessionId;
 
-        json.attributes = json.attributes || {};
         for(let i = 0; i < json.result.contexts.length; i++) {
-            json.attributes[json.result.contexts[i].name] = json.result.contexts[i].parameters;
+            let value = json.result.contexts[i].parameters;
+            if(value.value !== undefined && value.boxed === true) {
+                value = value.value;
+            }
+            json.session.attributes[json.result.contexts[i].name] = value;
         }
     }
 
@@ -61,9 +65,13 @@ function addApiAiAttributes(context) {
         if(!json.data) {
             json.data = {}
         }
-        json.data.contextOut = [];
+        json.contextOut = [];
         for(let key in json.sessionAttributes) {
-            json.data.contextOut.push({name: key, lifespan: 0, parameters: json.sessionAttributes[key]});
+            let value = json.sessionAttributes[key];
+            if((typeof value) !== 'object') {
+                value = {value: value, boxed: true};
+            }
+            json.contextOut.push({name: key, lifespan: 60, parameters: value});
         }
 
         console.log("Send out:", json);
